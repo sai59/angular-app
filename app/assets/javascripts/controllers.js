@@ -1,16 +1,34 @@
-var todoControllers = angular.module('todoControllers', []);
-todoControllers.controller('TodoListCtrl', ['$scope', '$http',
-  function($scope, $http){
+//var todoControllers = angular.module('todoControllers', []);
+var todoApp = angular.module('todoApp',['todoControllers', 'todoServices']);
+var todoControllers = angular.module('todoControllers',[]);
+var todoServices = angular.module('todoServices',[]);
+
+todoServices.service('todoService', ['$http', function($http){
+  this.getTodos = function(callbackFunc){
     $http.get('insiders/todos').success(function(data){
-      $scope.todos = data
+      callbackFunc(data);
     });
-    $scope.submit = function() {
-      if ($scope.description) {
-        var data = {description: $scope.description}
-        $http.post('insiders/todos/new', data).success(function(data){
-          $scope.todos.push(data);
-          $scope.description = '';
-        });
-      }
+  }
+
+  this.addTodo = function(data, callbackFunc){
+    $http.post('insiders/todos/new', data).success(function(data){
+      callbackFunc(data);
+    });
+  }
+}]);
+
+todoControllers.controller('TodoListCtrl', ['$scope', 'todoService', function($scope, todoService){
+  $scope.todos = null;
+  todoService.getTodos(function (data) {
+    $scope.todos = data;
+  });
+  $scope.submit = function() {
+    if ($scope.description) {
+      var data = {description: $scope.description}
+      todoService.addTodo(data, function(dataresponse) {
+        $scope.todos.push(dataresponse);
+        $scope.description = '';
+      });
     }
-  }])
+  }
+}]);
