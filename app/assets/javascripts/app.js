@@ -1,3 +1,1 @@
-//var todoApp = angular.module('todoApp',['todoControllers']);
-
-
+var todoApp = angular.module('todoApp',['todoControllers', 'todoServices']);
