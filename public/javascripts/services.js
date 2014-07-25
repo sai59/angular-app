@@ -1,5 +1,3 @@
-var todoServices = angular.module('todoServices', []);
-
 todoServices.factory('TodoService', ['$http', '$q', function($http, $q) {
   return {
     getTodos: function() {

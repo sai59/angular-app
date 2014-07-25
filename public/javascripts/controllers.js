@@ -1,5 +1,3 @@
-var todoControllers = angular.module('todoControllers', []);
-
 todoControllers.controller('TodoListCtrl', ['$scope', '$q', 'TodoService',  function($scope, $q, TodoService){
   $scope.todos = null;
   TodoService.getTodos().then(function(result) {
