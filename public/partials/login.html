@@ -1,0 +1,8 @@
+<h2>Login</h2>
+<div controller="SessionController">
+  <form ng-submit="login()" name="login-form" id="login_form">
+    <input ng-model="user.email" placeholder="User name" />
+    <input type="password" ng-model="user.password" placeholder="password" />
+    <button type="submit">Login</button>
+  </form>
+</div>
