@@ -1,10 +1,11 @@
-<div ng-controller = 'TodoListCtrl'>
-  <h1>Todo List</h1>
-  <a ui-sref=".create">New Todo</a>
-  <div ui-view></div>
-  <ul>
-    <li ng-repeat="todo in todos">
-      {{todo.description}}
-    </li>
-  </ul>
+<div ui-view>
+  <div ng-controller = 'TodoListCtrl'>
+    <h1>Todo List</h1>
+    <a ui-sref=".create">New Todo</a>
+    <ul>
+      <li ng-repeat="todo in todos">
+        {{todo.description}}
+      </li>
+    </ul>
+  </div>
 </div>
