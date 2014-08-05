@@ -37,6 +37,6 @@ todoControllers.controller('SessionController', ['$scope', '$q','$window', '$loc
   $scope.logout = function() {
     SessionService.isLoggedIn = false;
     delete $window.sessionStorage.token;
-    $location.path("/login");
+    $location.path("/");
   }
 }])

@@ -41,6 +41,11 @@ module Insider
       get '/todos' do
         Todo.order("todos.created_at DESC")
       end
+
+      get '/todos/:id' do
+        Todo.find(params[:id])
+      end
+
       post '/todos/new' do
         todo = Todo.new({:description => params[:description]})
         if todo.save
