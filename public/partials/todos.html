@@ -1,20 +1,9 @@
-<h2>Welcome to the Todo App</h2>
-  <a href="/">Home</a>
-  <a href="#/todos">Todos</a>
-  <div ng-controller="SessionController" style="float:right;">
-    <button ng-click="logout()">Logout</button>
-  </div>
-</p>
-
 <div ng-controller = 'TodoListCtrl'>
   <h1>Todo List</h1>
-  <form ng-submit="createTodo()">
-    Add Todo
-    <input type='text' ng-model='description'>
-    <input type='submit' value="submit">
-  </form>
+  <a ui-sref=".create">New Todo</a>
+  <div ui-view></div>
   <ul>
-    <li ng-repeat="todo in todos | reverse">
+    <li ng-repeat="todo in todos">
       {{todo.description}}
     </li>
   </ul>

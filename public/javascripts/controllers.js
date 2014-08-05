@@ -1,4 +1,4 @@
-todoControllers.controller('TodoListCtrl', ['$scope', '$q', 'TodoService',  function($scope, $q, TodoService){
+todoControllers.controller('TodoListCtrl', ['$scope', '$q', 'TodoService', '$state', function($scope, $q, TodoService, $state){
   $scope.todos = [];
   TodoService.getTodos().then(function(result) {
     $scope.todos = result.data;
@@ -15,6 +15,13 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$q', 'TodoService',  func
      console.log("todo not created", result);
     });
   }
+  
+  // $scope.$watchCollection('todos', function(newvalues, oldvalues){
+    // console.log($scope.todos);
+    // $scope.todos = function(){
+      // return newvalues;
+    // }
+  // })
 
 }])
 
@@ -27,7 +34,7 @@ todoControllers.controller('SessionController', ['$scope', '$q','$window', '$loc
     UserService.login(data).then(function(result) {
       SessionService.isLoggedIn = true;
       $window.sessionStorage.token = result.data;
-      $location.path("/todos");
+      $location.path("/home");
     },
     function (result) {
       console.log('user unauthenticated', result);
