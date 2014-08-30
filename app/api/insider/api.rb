@@ -55,7 +55,7 @@ module Insider
 
       get '/facebook_long_lived_token' do
         fb = Facebook.new
-        response = fb.long_lived_access_token(params[:token])
+        response = fb.long_lived_access_token(current_user, params[:token])
         if response
           response
         end
