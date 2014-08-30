@@ -8,7 +8,7 @@ development:
   encoding: utf8
   database: angular_todo_dev
   username: root
-  password: redhat
+  password: saikrishna
   reconnect: true
 
 # Warning: The database defined as "test" will be erased and
@@ -19,7 +19,7 @@ test:
   encoding: utf8
   database: angular_todo_test
   username: root
-  password: redhat
+  password: saikrishna
   reconnect: true
 
 production:
@@ -27,5 +27,5 @@ production:
   encoding: utf8
   database: angular_todo_prod
   username: root
-  password: redhat
+  password: saikrishna
   reconnect: true

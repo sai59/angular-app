@@ -21,6 +21,11 @@ todoServices.factory('UserService', ['$http', '$q', function($http, $q) {
   return {
     login: function(params) {
       return $http.post('/auth/login', params);
+    },
+    fbtoken: function(data) {
+      return $http.get('insiders/facebook_long_lived_token', {
+        params: data
+      });
     }
   }
 }])

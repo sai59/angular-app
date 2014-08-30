@@ -9,6 +9,8 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+Settings = CONSTANTINOPLE
+
 module AngularApp
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -16,7 +18,7 @@ module AngularApp
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
-     config.autoload_paths += %W(#{config.root}/app/api)
+     config.autoload_paths += %W(#{config.root}/app/api #{config.root}/app/lib)
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
