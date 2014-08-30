@@ -52,6 +52,14 @@ module Insider
           todo
         end
       end
+
+      get '/facebook_long_lived_token' do
+        fb = Facebook.new
+        response = fb.long_lived_access_token(params[:token])
+        if response
+          response
+        end
+      end
     end
   end
 end

@@ -1,4 +1,4 @@
-todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoService',  function($scope, $state, $q, TodoService){
+todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoService', 'UserService',  function($scope, $state, $q, TodoService, UserService){
   $scope.todos = [];
   TodoService.getTodos().then(function(result) {
     $scope.todos = result.data;
@@ -14,6 +14,42 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
       $state.transitionTo('todos.create', $state.$current.params, { reload: true, inherit: true, notify: true });
     }, function(result) {
      console.log("todo not created", result);
+    });
+  }
+
+  $scope.share = function(todo) {
+    FB.login(function(response){
+      if (response.status === 'connected') {
+        var data = {
+          token: response.authResponse.accessToken
+        }
+        console.log(response);
+        UserService.fbtoken(data).then(function(result) {
+          console.log(result);
+        }, function(reason) {
+          console.log('something went horribly wrong.', reason)
+        });
+        FB.ui({
+          method : 'feed',
+          name : todo.description,
+          link : 'http://www.hyperarts.com/external-xfbml/',
+          picture : 'http://www.hyperarts.com/external-xfbml/share-image.gif',
+          caption : "post.caption",
+          description : todo.description,
+          message : ''
+        }, function(response) {
+          if (response && !response.error_code) {
+            console.log(response.post_id);
+          } else {
+            alert('Error while posting.');
+          }
+        });
+      } else if (response.status === 'not_authorized') {
+        // The person is logged into Facebook, but not your app.
+      } else {
+        // The person is not logged into Facebook, so we're not sure if
+        // they are logged into this app or not.
+      }
     });
   }
 
