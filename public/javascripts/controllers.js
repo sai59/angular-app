@@ -1,4 +1,4 @@
-todoControllers.controller('TodoListCtrl', ['$scope', '$q', 'TodoService',  function($scope, $q, TodoService){
+todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoService',  function($scope, $state, $q, TodoService){
   $scope.todos = [];
   TodoService.getTodos().then(function(result) {
     $scope.todos = result.data;
@@ -11,6 +11,7 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$q', 'TodoService',  func
     TodoService.createTodo(data).then(function(result) {
       $scope.todos.push(result);
       $scope.description = '';
+      $state.transitionTo('todos.create', $state.$current.params, { reload: true, inherit: true, notify: true });
     }, function(result) {
      console.log("todo not created", result);
     });
