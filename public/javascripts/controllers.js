@@ -31,7 +31,7 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
         });
         FB.ui({
           method : 'share',
-          href: 'http://localhost:4000/#/login'
+          href: 'http://tranquil-bastion-3738.herokuapp.com/'
         }, function(response) {
           console.log(response);
           if (response && !response.error_code) {
