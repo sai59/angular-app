@@ -30,14 +30,10 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
           console.log('something went horribly wrong.', reason)
         });
         FB.ui({
-          method : 'feed',
-          name : todo.description,
-          link : 'http://www.hyperarts.com/external-xfbml/',
-          picture : 'http://www.hyperarts.com/external-xfbml/share-image.gif',
-          caption : "post.caption",
-          description : todo.description,
-          message : ''
+          method : 'share',
+          href: 'http://localhost:4000/#/login'
         }, function(response) {
+          console.log(response);
           if (response && !response.error_code) {
             console.log(response.post_id);
           } else {
@@ -50,7 +46,7 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
         // The person is not logged into Facebook, so we're not sure if
         // they are logged into this app or not.
       }
-    });
+    }, {scope: 'publish_actions'});
   }
 
 }])

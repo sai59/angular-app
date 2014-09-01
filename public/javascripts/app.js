@@ -1,4 +1,4 @@
-var todoApp = angular.module('todoApp',['todoControllers', 'todoServices', 'todoFilters', 'ngRoute', 'ui.router']);
+var todoApp = angular.module('todoApp',['todoControllers', 'todoServices', 'todoFilters', 'ui.router']);
 var todoControllers = angular.module('todoControllers', []);
 var todoServices = angular.module('todoServices', []);
 var todoFilters = angular.module('todoFilters', []);
