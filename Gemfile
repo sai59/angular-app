@@ -5,7 +5,6 @@ gem 'rails', '3.2.17'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2'
 gem 'grape', '~> 0.8.0'
 gem 'httparty', '~> 0.13.1'
 gem 'constantinople', '~> 0.2.2'
@@ -24,6 +23,11 @@ end
 
 gem 'jquery-rails'
 
+
+group :production do
+  gem 'rails_12factor'
+  gem 'pg'
+end
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
