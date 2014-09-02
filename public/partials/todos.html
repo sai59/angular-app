@@ -7,7 +7,6 @@
       <ul>
         <li ng-repeat="todo in todos | reverse">
           <a ui-sref="todos.show({todoId: todo.id})">{{todo.title}}</a>
-          <button ng-click="share(todo)">Share</button>
         </li>
       </ul>
     </div>

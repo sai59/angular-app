@@ -30,7 +30,7 @@ todoApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider,
         }
       },
     controller: function($scope, todo) {
-      $scope.todo = todo.data.description;
+      $scope.todo = todo.data;
     }
   })
 }]);
