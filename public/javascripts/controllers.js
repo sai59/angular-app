@@ -7,10 +7,16 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
   })
 
   $scope.createTodo =  function() {
-    var data = {description: $scope.description}
+    var data = {
+      title: $scope.title,
+      description: $scope.description,
+      image_url: $scope.image_url
+    }
     TodoService.createTodo(data).then(function(result) {
       $scope.todos.push(result);
+      $scope.title = '';
       $scope.description = '';
+      $scope.image_url = '';
       $state.transitionTo('todos.create', $state.$current.params, { reload: true, inherit: true, notify: true });
     }, function(result) {
      console.log("todo not created", result);

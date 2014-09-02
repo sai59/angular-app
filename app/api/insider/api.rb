@@ -47,7 +47,7 @@ module Insider
       end
 
       post '/todos/new' do
-        todo = Todo.new({:description => params[:description]})
+        todo = Todo.new({:description => params[:description], :title => params[:title], :image_url => params[:image_url]})
         if todo.save
           todo
         end
