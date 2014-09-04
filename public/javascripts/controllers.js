@@ -79,3 +79,68 @@ todoControllers.controller('SessionController', ['$scope', '$q','$window', '$loc
     $location.path("/");
   }
 }])
+
+todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '$rootScope', 'UserService',  function($scope, $http, $stateParams, $rootScope, UserService){
+  $scope.todo = { };
+  $http.get('insiders/todos/'+$stateParams.todoId).then(function(result) {
+    $scope.todo = result.data;
+    if($rootScope.gplus_session_state) {
+      gapi.auth.checkSessionState({
+        client_id: $rootScope.gplus_client_id,
+        session_state: $rootScope.gplus_session_state
+      }, function(status) {
+        if(status) {
+          $scope.renderShareButton();
+        } else {
+          gapi.auth.signOut();
+          $scope.renderShareButton();
+        }
+      })
+    } else {
+      $scope.renderShareButton();
+    }
+  }, function(reason) {
+    console.log('something went horribly wrong.', reason)
+  });
+
+  $scope.processAuth = function(authResult) {
+    // Do a check if authentication has been successful.
+    if(authResult.access_token) {
+      $rootScope.gplus_client_id = authResult.client_id;
+      $rootScope.gplus_session_state = authResult.session_state;
+      var data = {
+        code: authResult.code
+      }
+      UserService.gplustoken(data).then(function(result) {
+        console.log(result);
+      }, function(reason) {
+        console.log('something went horribly wrong.', reason)
+      });
+    } else if(authResult['error']) {
+    }
+  };
+
+  // When callback is received, we need to process authentication.
+  $scope.signInCallback = function(authResult) {
+    $scope.$apply(function() {
+      $scope.processAuth(authResult);
+    });
+  };
+
+  // Render the sign in button.
+  $scope.renderShareButton = function() {
+    var options = {
+       contenturl: 'http://todo-social.herokuapp.com',
+       contentdeeplinkid: '/pages',
+       clientid: '1045194091732-aasm5rpi68npeona5srgb01q7o56r0ob.apps.googleusercontent.com',
+       cookiepolicy: 'single_host_origin',
+       prefilltext: $scope.todo.title,
+       calltoactionlabel: 'VIEW',
+       calltoactionurl: 'http://todo-social.herokuapp.com',
+       calltoactiondeeplinkid: '/pages/create',
+       callback: $scope.signInCallback
+     };
+    gapi.interactivepost.render('googlePlusBtn', options);
+  }
+
+}])

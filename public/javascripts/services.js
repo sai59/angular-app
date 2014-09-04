@@ -26,6 +26,11 @@ todoServices.factory('UserService', ['$http', '$q', function($http, $q) {
       return $http.get('insiders/facebook_long_lived_token', {
         params: data
       });
+    },
+    gplustoken: function(data) {
+      return $http.get('insiders/gplus_long_lived_token', {
+        params: data
+      });
     }
   }
 }])

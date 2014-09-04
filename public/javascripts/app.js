@@ -22,16 +22,9 @@ todoApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider,
     controller: 'TodoListCtrl'
   })
   .state('todos.show', {
-      url:'/show/:todoId',
-      templateUrl: 'partials/todos.show.html',
-      resolve: {
-        todo: function($http, $stateParams) {
-          return $http.get('insiders/todos/'+$stateParams.todoId)
-        }
-      },
-    controller: function($scope, todo) {
-      $scope.todo = todo.data;
-    }
+    url:'/show/:todoId',
+    templateUrl: 'partials/todos.show.html',
+    controller: 'TodoShowCtrl'
   })
 }]);
 

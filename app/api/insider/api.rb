@@ -60,6 +60,10 @@ module Insider
           response
         end
       end
+
+      get '/gplus_long_lived_token' do
+        params[:code]
+      end
     end
   end
 end
