@@ -23,38 +23,6 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
     });
   }
 
-  $scope.share = function(todo) {
-    FB.login(function(response){
-      if (response.status === 'connected') {
-        var data = {
-          token: response.authResponse.accessToken
-        }
-        console.log(response);
-        UserService.fbtoken(data).then(function(result) {
-          console.log(result);
-        }, function(reason) {
-          console.log('something went horribly wrong.', reason)
-        });
-        FB.ui({
-          method : 'share',
-          href: 'http://todo-social.herokuapp.com/todos/'+todo.id
-        }, function(response) {
-          console.log(response);
-          if (response && !response.error_code) {
-            console.log(response.post_id);
-          } else {
-            alert('Error while posting.');
-          }
-        });
-      } else if (response.status === 'not_authorized') {
-        // The person is logged into Facebook, but not your app.
-      } else {
-        // The person is not logged into Facebook, so we're not sure if
-        // they are logged into this app or not.
-      }
-    }, {scope: 'publish_actions'});
-  }
-
 }])
 
 todoControllers.controller('SessionController', ['$scope', '$q','$window', '$location', 'UserService', 'SessionService',  function($scope, $q, $window, $location, UserService, SessionService){
@@ -142,5 +110,74 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
      };
     gapi.interactivepost.render('googlePlusBtn', options);
   }
+  
+  $scope.checkandshare = function(todo) {
+    $scope.start(todo);
+  }
+  
+  $scope.share = function(todo) {
+    FB.login(function(response){
+      if (response.status === 'connected') {
+        var data = {
+          token: response.authResponse.accessToken
+        }
+        console.log(response);
+        UserService.fbtoken(data).then(function(result) {
+          console.log(result);
+        }, function(reason) {
+          console.log('something went horribly wrong.', reason)
+        });
+        FB.ui({
+          method : 'share',
+          href: 'http://developers.facebook.com/docs',
+        }, function(response) {
+          console.log(response);
+          if (response && !response.error_code) {
+            console.log(response.post_id);
+          } else {
+            alert('Error while posting.');
+          }
+        });
+      } else if (response.status === 'not_authorized') {
+        // The person is logged into Facebook, but not your app.
+        console.log('Please log into this app.');
+      } else {
+        // The person is not logged into Facebook, so we're not sure if
+        // they are logged into this app or not.
+        console.log('Please log into Facebook.');
+      }
+    }, {scope: 'publish_actions'});
+  }
+
+  $scope.start = function(todo) {
+    FB.getLoginStatus(function(response) {
+      if(response.status === 'connected') {
+        FB.api('/me', function(response) {
+          if(response.error) {
+            FB.logout(function(response) {
+            });       
+          } else {
+            if(todo.title) {
+              $scope.share(todo);
+            }
+          }
+        });
+      }  else if (response.status === 'not_authorized') {
+        // The person is logged into Facebook, but not your app.
+        if(todo.title) {
+          $scope.share(todo);
+        }
+      } else {
+        // The person is not logged into Facebook, so we're not sure if
+        // they are logged into this app or not.
+        if(todo.title) {
+          $scope.share(todo);
+        }
+      }
+    });
+  };
+
+  // Call start function on load.
+  $scope.start({});
 
 }])
