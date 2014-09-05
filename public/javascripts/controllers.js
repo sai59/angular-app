@@ -111,11 +111,7 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
     gapi.interactivepost.render('googlePlusBtn', options);
   }
   
-  $scope.checkandshare = function(todo) {
-    $scope.start(todo);
-  }
-  
-  $scope.share = function(todo) {
+  $scope.fbshare = function(todo) {
     FB.login(function(response){
       if (response.status === 'connected') {
         var data = {
@@ -135,7 +131,7 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
           if (response && !response.error_code) {
             console.log(response.post_id);
           } else {
-            alert('Error while posting.');
+            // alert('Error while posting.');
           }
         });
       } else if (response.status === 'not_authorized') {
@@ -149,35 +145,20 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
     }, {scope: 'publish_actions'});
   }
 
-  $scope.start = function(todo) {
+  $scope.fbcheck = function(todo) {
     FB.getLoginStatus(function(response) {
       if(response.status === 'connected') {
         FB.api('/me', function(response) {
           if(response.error) {
-            FB.logout(function(response) {
-            });       
+            $scope.fbshare(todo);
           } else {
-            if(todo.title) {
-              $scope.share(todo);
-            }
+            $scope.fbshare(todo);
           }
         });
-      }  else if (response.status === 'not_authorized') {
-        // The person is logged into Facebook, but not your app.
-        if(todo.title) {
-          $scope.share(todo);
-        }
       } else {
-        // The person is not logged into Facebook, so we're not sure if
-        // they are logged into this app or not.
-        if(todo.title) {
-          $scope.share(todo);
-        }
+        $scope.fbshare(todo);
       }
     });
-  };
-
-  // Call start function on load.
-  $scope.start({});
+  }
 
 }])
