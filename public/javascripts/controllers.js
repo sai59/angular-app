@@ -52,21 +52,6 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
   $scope.todo = { };
   $http.get('insiders/todos/'+$stateParams.todoId).then(function(result) {
     $scope.todo = result.data;
-    if($rootScope.gplus_session_state) {
-      gapi.auth.checkSessionState({
-        client_id: $rootScope.gplus_client_id,
-        session_state: $rootScope.gplus_session_state
-      }, function(status) {
-        if(status) {
-          $scope.renderShareButton();
-        } else {
-          gapi.auth.signOut();
-          $scope.renderShareButton();
-        }
-      })
-    } else {
-      $scope.renderShareButton();
-    }
   }, function(reason) {
     console.log('something went horribly wrong.', reason)
   });
@@ -74,6 +59,7 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
   $scope.processAuth = function(authResult) {
     // Do a check if authentication has been successful.
     if(authResult.access_token) {
+      console.log(authResult);
       $rootScope.gplus_client_id = authResult.client_id;
       $rootScope.gplus_session_state = authResult.session_state;
       var data = {
@@ -90,13 +76,15 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
 
   // When callback is received, we need to process authentication.
   $scope.signInCallback = function(authResult) {
-    $scope.$apply(function() {
-      $scope.processAuth(authResult);
-    });
+    $scope.processAuth(authResult);
   };
 
   // Render the sign in button.
   $scope.renderShareButton = function() {
+    angular.element(document.querySelector('#googlePlusBtn')).unbind('click');
+    angular.element(document.querySelector('#googlePlusBtn')).remove();
+    angular.element(document.querySelector('#dummygplusBtn')).after("<div id='googlePlusBtn' style='display:none'></div>");
+    angular.element(document.querySelector('#googlePlusBtn')).bind('click');
     var options = {
        contenturl: 'http://todo-social.herokuapp.com',
        contentdeeplinkid: '/pages',
@@ -109,8 +97,27 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
        callback: $scope.signInCallback
      };
     gapi.interactivepost.render('googlePlusBtn', options);
+    window.setTimeout(function(){window.document.getElementById('googlePlusBtn').click();}, 1000);
   }
-  
+
+  $scope.gpluscheck = function(todo) {
+    if($rootScope.gplus_session_state) {
+      gapi.auth.checkSessionState({
+        client_id: $rootScope.gplus_client_id,
+        session_state: $rootScope.gplus_session_state
+      }, function(status) {
+        if(status) {
+          $scope.renderShareButton();
+        } else {
+          gapi.auth.signOut();
+          $scope.renderShareButton();
+        }
+      })
+    } else {
+      $scope.renderShareButton();
+    }
+  }
+
   $scope.fbshare = function(todo) {
     FB.login(function(response){
       if (response.status === 'connected') {

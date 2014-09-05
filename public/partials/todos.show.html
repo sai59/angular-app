@@ -7,4 +7,5 @@ Description: {{todo.description}}
 Image: <img src="{{todo.image_url}}" width='150px' height='150px'/>
 <br/>
 <button ng-click="fbcheck(todo)" id="fbBtn">Fb Share</button>
-<button id="googlePlusBtn">G+ Share</button>
+<div id="googlePlusBtn" style="display:none"></div>
+<button id="dummygplusBtn" ng-click="gpluscheck(todo)">G+ Share</button>
