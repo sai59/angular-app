@@ -8,7 +8,7 @@ gem 'rails', '3.2.17'
 gem 'grape', '~> 0.8.0'
 gem 'httparty', '~> 0.13.1'
 gem 'constantinople', '~> 0.2.2'
-
+gem 'google_plus'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -22,7 +22,6 @@ group :assets do
 end
 
 gem 'jquery-rails'
-
 
 group :production do
   gem 'rails_12factor'

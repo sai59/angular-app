@@ -56,16 +56,14 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
     console.log('something went horribly wrong.', reason)
   });
 
-  $scope.processAuth = function(authResult) {
+  $scope.processAuth = function(authResult, user) {
     // Do a check if authentication has been successful.
     if(authResult.access_token) {
       console.log(authResult);
       $rootScope.gplus_client_id = authResult.client_id;
       $rootScope.gplus_session_state = authResult.session_state;
-      var data = {
-        code: authResult.code
-      }
-      UserService.gplustoken(data).then(function(result) {
+      $rootScope.gplus_user_id = user.id;
+      UserService.save_gplus_user_id(user).then(function(result) {
         console.log(result);
       }, function(reason) {
         console.log('something went horribly wrong.', reason)
@@ -76,15 +74,23 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
 
   // When callback is received, we need to process authentication.
   $scope.signInCallback = function(authResult) {
-    $scope.processAuth(authResult);
+    gapi.client.load('plus','v1', function(){
+     var request = gapi.client.plus.people.get({
+       'userId': 'me',
+       'fields': 'id'
+     });
+     request.execute(function(user) {
+       $scope.processAuth(authResult, user);
+     });
+    });
   };
 
   // Render the sign in button.
   $scope.renderShareButton = function() {
-    angular.element(document.querySelector('#googlePlusBtn')).unbind('click');
-    angular.element(document.querySelector('#googlePlusBtn')).remove();
-    angular.element(document.querySelector('#dummygplusBtn')).after("<div id='googlePlusBtn' style='display:none'></div>");
-    angular.element(document.querySelector('#googlePlusBtn')).bind('click');
+    angular.element(document.querySelector('[id^="googlePlusBtn"]')).unbind('click');
+    angular.element(document.querySelector('[id^="googlePlusBtn"]')).remove();
+    angular.element(document.querySelector('#dummygplusBtn')).after("<div id='googlePlusBtn"+$scope.todo.id+"' style='display:none'></div>");
+    angular.element(document.querySelector('[id^="googlePlusBtn"]')).bind('click');
     var options = {
        contenturl: 'http://todo-social.herokuapp.com',
        contentdeeplinkid: '/pages',
@@ -96,8 +102,8 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
        calltoactiondeeplinkid: '/pages/create',
        callback: $scope.signInCallback
      };
-    gapi.interactivepost.render('googlePlusBtn', options);
-    window.setTimeout(function(){window.document.getElementById('googlePlusBtn').click();}, 1000);
+    gapi.interactivepost.render('googlePlusBtn'+$scope.todo.id, options);
+    window.setTimeout(function(){window.document.getElementById('googlePlusBtn'+$scope.todo.id).click();}, 1000);
   }
 
   $scope.gpluscheck = function(todo) {

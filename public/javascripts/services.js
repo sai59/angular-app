@@ -27,8 +27,8 @@ todoServices.factory('UserService', ['$http', '$q', function($http, $q) {
         params: data
       });
     },
-    gplustoken: function(data) {
-      return $http.get('insiders/gplus_long_lived_token', {
+    save_gplus_user_id: function(data) {
+      return $http.get('insiders/save_gplus_user_id', {
         params: data
       });
     }

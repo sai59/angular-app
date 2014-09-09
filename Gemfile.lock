@@ -52,6 +52,9 @@ GEM
     equalizer (0.0.9)
     erubis (2.7.0)
     execjs (2.2.1)
+    google_plus (0.2.3)
+      json
+      rest-client (~> 1.6.1)
     grape (0.8.0)
       activesupport
       builder
@@ -117,6 +120,9 @@ GEM
     rake (10.3.2)
     rdoc (3.12.2)
       json (~> 1.4)
+    rest-client (1.6.8)
+      mime-types (~> 1.16)
+      rdoc (>= 2.4.2)
     sass (3.3.10)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -149,6 +155,7 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
   constantinople (~> 0.2.2)
+  google_plus
   grape (~> 0.8.0)
   httparty (~> 0.13.1)
   jquery-rails

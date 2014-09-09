@@ -61,8 +61,9 @@ module Insider
         end
       end
 
-      get '/gplus_long_lived_token' do
-        params[:code]
+      get '/save_gplus_user_id' do
+        puts params.id.inspect
+        params
       end
     end
   end
