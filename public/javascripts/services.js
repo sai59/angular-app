@@ -79,13 +79,13 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
     angular.element(document.querySelector('#dummygplusBtn')).after("<div id='googlePlusBtn"+todo.id+"' style='display:none'></div>");
     angular.element(document.querySelector('[id^="googlePlusBtn"]')).bind('click');
     var options = {
-       contenturl: 'http://todo-social.herokuapp.com',
+       contenturl: 'http://todo-social.herokuapp.com/todos/'+todo.id,
        contentdeeplinkid: '/pages',
        clientid: '1045194091732-aasm5rpi68npeona5srgb01q7o56r0ob.apps.googleusercontent.com',
        cookiepolicy: 'single_host_origin',
        prefilltext: todo.title,
        calltoactionlabel: 'VIEW',
-       calltoactionurl: 'http://todo-social.herokuapp.com',
+       calltoactionurl: 'http://todo-social.herokuapp.com/todos/'+todo.id,
        calltoactiondeeplinkid: '/pages/create',
        callback: obj.signInCallback
      };
