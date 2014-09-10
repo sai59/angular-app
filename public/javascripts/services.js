@@ -172,7 +172,7 @@ todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$root
           });
           FB.ui({
             method : 'share',
-            href: 'http://developers.facebook.com/docs',
+            href: 'http://todo-social.herokuapp.com/todos/'+todo.id,
           }, function(response) {
             console.log(response);
             if (response && !response.error_code) {
