@@ -6,7 +6,7 @@
   <meta property="og:type"   content="article" />
   <meta property="og:title"  content="<%= @todo.title %>" />
   <meta property="og:description"  content="<%= @todo.description %>" />
-  <meta property="og:image" content="http://todo-social.herokuapp.com/images/choco_pie.jpg" />
+  <meta property="og:image" content="<%= @todo.image_url %>" />
   <meta property="og:url" content="<%= 'http://todo-social.herokuapp.com/#/todos/show/'+@todo.id.to_s %>" />
 </head>
 <body>
