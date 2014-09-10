@@ -48,11 +48,11 @@ todoControllers.controller('SessionController', ['$scope', '$q','$window', '$loc
   }
 
   $scope.gPlusCheck = function(action) {
-    GplusService.gPlusCheckLoginStateAndRender(action);
+    GplusService.gPlusCheckLoginStateAndRender(action, null);
   }
 
   $scope.fbCheck = function(action) {
-    FbService.fbCheckLoginStateAndRender(action)
+    FbService.fbCheckLoginStateAndRender(action, null)
   }
 
 }])

@@ -109,7 +109,7 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
     }, 1000);
   }
 
-  obj.gPlusCheckLoginStateAndRender = function(action, todo=null) {
+  obj.gPlusCheckLoginStateAndRender = function(action, todo) {
     if($rootScope.gplus_session_state) {
       gapi.auth.checkSessionState({
         client_id: $rootScope.gplus_client_id,
@@ -193,7 +193,7 @@ todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$root
     }, {scope: 'publish_actions'});
   }
 
-  obj.fbCheckLoginStateAndRender = function(action, todo= null) {
+  obj.fbCheckLoginStateAndRender = function(action, todo) {
     FB.getLoginStatus(function(response) {
       if(response.status === 'connected') {
         FB.api('/me', function(response) {
