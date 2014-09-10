@@ -25,7 +25,7 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
 
 }])
 
-todoControllers.controller('SessionController', ['$scope', '$q','$window', '$location', 'UserService', 'SessionService',  function($scope, $q, $window, $location, UserService, SessionService){
+todoControllers.controller('SessionController', ['$scope', '$q','$window', '$location', 'UserService', 'SessionService', 'GplusService', 'FbService', function($scope, $q, $window, $location, UserService, SessionService, GplusService, FbService){
   $scope.login = function() {
     var data = {};
     data.email = $scope.user.email;
@@ -46,9 +46,18 @@ todoControllers.controller('SessionController', ['$scope', '$q','$window', '$loc
     delete $window.sessionStorage.token;
     $location.path("/");
   }
+
+  $scope.gPlusCheck = function(action) {
+    GplusService.gPlusCheckLoginStateAndRender(action);
+  }
+
+  $scope.fbCheck = function(action) {
+    FbService.fbCheckLoginStateAndRender(action)
+  }
+
 }])
 
-todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '$rootScope', 'UserService',  function($scope, $http, $stateParams, $rootScope, UserService){
+todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '$rootScope', 'GplusService', 'FbService',  function($scope, $http, $stateParams, $rootScope, GplusService, FbService){
   $scope.todo = { };
   $http.get('insiders/todos/'+$stateParams.todoId).then(function(result) {
     $scope.todo = result.data;
@@ -56,122 +65,12 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
     console.log('something went horribly wrong.', reason)
   });
 
-  $scope.processAuth = function(authResult, user) {
-    // Do a check if authentication has been successful.
-    if(authResult.access_token) {
-      console.log(authResult);
-      $rootScope.gplus_client_id = authResult.client_id;
-      $rootScope.gplus_session_state = authResult.session_state;
-      $rootScope.gplus_user_id = user.id;
-      UserService.save_gplus_user_id(user).then(function(result) {
-        console.log(result);
-      }, function(reason) {
-        console.log('something went horribly wrong.', reason)
-      });
-    } else if(authResult['error']) {
-    }
-  };
-
-  // When callback is received, we need to process authentication.
-  $scope.signInCallback = function(authResult) {
-    gapi.client.load('plus','v1', function(){
-     var request = gapi.client.plus.people.get({
-       'userId': 'me',
-       'fields': 'id'
-     });
-     request.execute(function(user) {
-       $scope.processAuth(authResult, user);
-     });
-    });
-  };
-
-  // Render the sign in button.
-  $scope.renderShareButton = function() {
-    angular.element(document.querySelector('[id^="googlePlusBtn"]')).unbind('click');
-    angular.element(document.querySelector('[id^="googlePlusBtn"]')).remove();
-    angular.element(document.querySelector('#dummygplusBtn')).after("<div id='googlePlusBtn"+$scope.todo.id+"' style='display:none'></div>");
-    angular.element(document.querySelector('[id^="googlePlusBtn"]')).bind('click');
-    var options = {
-       contenturl: 'http://todo-social.herokuapp.com',
-       contentdeeplinkid: '/pages',
-       clientid: '1045194091732-aasm5rpi68npeona5srgb01q7o56r0ob.apps.googleusercontent.com',
-       cookiepolicy: 'single_host_origin',
-       prefilltext: $scope.todo.title,
-       calltoactionlabel: 'VIEW',
-       calltoactionurl: 'http://todo-social.herokuapp.com',
-       calltoactiondeeplinkid: '/pages/create',
-       callback: $scope.signInCallback
-     };
-    gapi.interactivepost.render('googlePlusBtn'+$scope.todo.id, options);
-    window.setTimeout(function(){window.document.getElementById('googlePlusBtn'+$scope.todo.id).click();}, 1000);
+  $scope.gPlusCheck = function(action, todo) {
+    GplusService.gPlusCheckLoginStateAndRender(action, todo);
   }
 
-  $scope.gpluscheck = function(todo) {
-    if($rootScope.gplus_session_state) {
-      gapi.auth.checkSessionState({
-        client_id: $rootScope.gplus_client_id,
-        session_state: $rootScope.gplus_session_state
-      }, function(status) {
-        if(status) {
-          $scope.renderShareButton();
-        } else {
-          gapi.auth.signOut();
-          $scope.renderShareButton();
-        }
-      })
-    } else {
-      $scope.renderShareButton();
-    }
-  }
-
-  $scope.fbshare = function(todo) {
-    FB.login(function(response){
-      if (response.status === 'connected') {
-        var data = {
-          token: response.authResponse.accessToken
-        }
-        console.log(response);
-        UserService.fbtoken(data).then(function(result) {
-          console.log(result);
-        }, function(reason) {
-          console.log('something went horribly wrong.', reason)
-        });
-        FB.ui({
-          method : 'share',
-          href: 'http://developers.facebook.com/docs',
-        }, function(response) {
-          console.log(response);
-          if (response && !response.error_code) {
-            console.log(response.post_id);
-          } else {
-            // alert('Error while posting.');
-          }
-        });
-      } else if (response.status === 'not_authorized') {
-        // The person is logged into Facebook, but not your app.
-        console.log('Please log into this app.');
-      } else {
-        // The person is not logged into Facebook, so we're not sure if
-        // they are logged into this app or not.
-        console.log('Please log into Facebook.');
-      }
-    }, {scope: 'publish_actions'});
-  }
-
-  $scope.fbcheck = function(todo) {
-    FB.getLoginStatus(function(response) {
-      if(response.status === 'connected') {
-        FB.api('/me', function(response) {
-          if(response.error) {
-            $scope.fbshare(todo);
-          } else {
-            $scope.fbshare(todo);
-          }
-        });
-      } else {
-        $scope.fbshare(todo);
-      }
-    });
+  $scope.fbCheck = function(action, todo) {
+    FbService.fbCheckLoginStateAndRender(action, todo);
   }
 
 }])

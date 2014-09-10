@@ -24,7 +24,11 @@ module Insider
 
     resource :auth do
       post :login do
-        user = User.where(:email => params[:email], :password => params[:password]).first
+        if params[:id]
+          # Query authentication table
+        else
+          user = User.where(:email => params[:email], :password => params[:password]).first
+        end
         if user.present?
           user.access_token
         else
