@@ -23,6 +23,10 @@ end
 
 gem 'jquery-rails'
 
+group :development do
+  gem 'mysql2'
+end
+
 group :production do
   gem 'rails_12factor'
   gem 'pg'
