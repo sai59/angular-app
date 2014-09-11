@@ -142,7 +142,7 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
   return obj;
 }])
 
-todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$rootScope', function(UserService, SessionService, $q, $rootScope) {
+todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$rootScope', '$window', '$http', function(UserService, SessionService, $q, $rootScope, $window, $http) {
   var obj = {};
 
   obj.fbShare = function(action, todo) {
@@ -177,6 +177,7 @@ todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$root
             console.log(response);
             if (response && !response.error_code) {
               console.log(response.post_id);
+              obj.storeGraphObject(response.post_id, todo.id, $window.sessionStorage.token)
             } else {
               // alert('Error while posting.');
             }
@@ -190,18 +191,14 @@ todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$root
         // they are logged into this app or not.
         console.log('Please log into Facebook.');
       }
-    }, {scope: 'publish_actions'});
+    }, {scope: 'publish_actions, read_stream'});
   }
 
   obj.fbCheckLoginStateAndRender = function(action, todo) {
     FB.getLoginStatus(function(response) {
       if(response.status === 'connected') {
         FB.api('/me', function(response) {
-          if(response.error) {
             obj.fbShare(action, todo);
-          } else {
-            obj.fbShare(action, todo);
-          }
         });
       } else {
         obj.fbShare(action, todo);
@@ -209,6 +206,16 @@ todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$root
     });
   }
 
+  obj.storeGraphObject = function(graph_object_id , todo_id, user_token) {
+    params = {
+      graph_object_id: graph_object_id,
+      todo_id: todo_id,
+      user_token: user_token
+    }
+    $http.post('/insiders/save_facebook_graph_object', params).then(function(result) {
+      console.log('saved to db');
+    })
+  }
   return obj;
 }]);
 
