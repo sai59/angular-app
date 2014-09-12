@@ -58,8 +58,8 @@ module Insider
       end
 
       get '/facebook_long_lived_token' do
-        fb = Facebook.new
-        response = fb.long_lived_access_token(current_user, params[:token])
+        fb = Social::Facebook::RenewToken.new
+        response = fb.get_long_lived_token(current_user, params[:token])
         if response
           response
         end
@@ -68,6 +68,14 @@ module Insider
       get '/save_gplus_user_id' do
         puts params.id.inspect
         params
+      end
+
+      post '/save_facebook_graph_object' do
+        FacebookGraphObject.new(
+          :user_id => current_user.id,
+          :todo_id => params[:todo_id],
+          :graph_object_id => params[:graph_object_id]
+        ).save!
       end
     end
   end
