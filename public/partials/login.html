@@ -1,12 +1,22 @@
 <h2>Login</h2>
+
 <div controller="SessionController">
-  <form ng-submit="login()" name="login-form" id="login_form" class="form-horizantal">
+
+  <form  name="loginForm" novalidate ng-submit="login()" id="login-form" class="form-horizantal">
     <div class="form-group">
-      <input ng-model="user.email" placeholder="User name" />
+      <input name="email" type="email" ng-model="user.email" placeholder="User name" required ng-class="{error: submitted && loginForm.email.$invalid}"/>
+      <small ng-show="loginForm.email.$error.required && submitted"> Please enter email</small>
+      <small ng-show="loginForm.email.$error.email && submitted">Please enter Valid email</small>
     </div>
-    <input type="password" ng-model="user.password" placeholder="password" />
-    <button type="submit">Login</button>
+
+    <div class="form-group">
+      <input name="password" type="password" ng-model="user.password" placeholder="password" required ng-class="{error: submitted && loginForm.password.$invalid}"/>
+      <small ng-show="loginForm.password.$error.required && submitted">Please enter Password</small>
+    </div>
+
+    <button type="submit" ng-click="submitted=true">Login</button>
   </form>
+
   <button id="dummyGplusLoginBtn" ng-click="gPlusCheck('login')">G+ Login</button>
   <button ng-click="fbCheck('login')">FB Login</button>
 </div>
