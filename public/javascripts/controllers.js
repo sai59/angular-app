@@ -26,7 +26,10 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
 }])
 
 todoControllers.controller('SessionController', ['$scope', '$q','$window', '$location', 'UserService', 'SessionService', 'GplusService', 'FbService', function($scope, $q, $window, $location, UserService, SessionService, GplusService, FbService){
-  $scope.login = function() {
+  $scope.login = function(form) {
+    if ($scope.loginForm.$invalid) {
+    return;
+  }
     var data = {};
     data.email = $scope.user.email;
     data.password = $scope.user.password;
