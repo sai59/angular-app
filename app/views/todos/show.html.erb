@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+  <title>AngularApp</title>
+  <meta property="fb:app_id" content="723487527699297" />
+  <meta property="og:type"   content="article" />
+  <meta property="og:title"  content="<%= @todo.title %>" />
+  <meta property="og:description"  content="<%= @todo.description %>" />
+  <meta property="og:image" content="<%= @todo.image_url %>" />
+  <meta property="og:url" content="<%= 'http://todo-social.herokuapp.com/todos/'+@todo.id.to_s %>" />
+</head>
+<body>
+  <img width="100px" height="100px" src='<%= @todo.image_url%>'></img>
+  </br>
+  <b><%= @todo.title %></b>
+  </br>
+  <%= @todo.description %>
+</body>
+</html>

@@ -1,2 +1,10 @@
 <h2>This is a todo show page</h2>
-  {{todo}}
+<br/>
+Title: {{todo.title}}
+<br/>
+Description: {{todo.description}}
+<br/>
+Image: <img src="{{todo.image_url}}" width='150px' height='150px'/>
+<br/>
+<button ng-click="fbCheck('share', todo)" id="fbBtn">Fb Share</button>
+<button id="dummygplusBtn" ng-click="gPlusCheck('share', todo)">G+ Share</button>

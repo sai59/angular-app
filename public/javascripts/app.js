@@ -1,4 +1,4 @@
-var todoApp = angular.module('todoApp',['todoControllers', 'todoServices', 'todoFilters', 'ngRoute', 'ui.router']);
+var todoApp = angular.module('todoApp',['todoControllers', 'todoServices', 'todoFilters', 'ui.router']);
 var todoControllers = angular.module('todoControllers', []);
 var todoServices = angular.module('todoServices', []);
 var todoFilters = angular.module('todoFilters', []);
@@ -22,16 +22,9 @@ todoApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider,
     controller: 'TodoListCtrl'
   })
   .state('todos.show', {
-      url:'/show/:todoId',
-      templateUrl: 'partials/todos.show.html',
-      resolve: {
-        todo: function($http, $stateParams) {
-          return $http.get('insiders/todos/'+$stateParams.todoId)
-        }
-      },
-    controller: function($scope, todo) {
-      $scope.todo = todo.data.description;
-    }
+    url:'/show/:todoId',
+    templateUrl: 'partials/todos.show.html',
+    controller: 'TodoShowCtrl'
   })
 }]);
 

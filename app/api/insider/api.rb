@@ -24,7 +24,11 @@ module Insider
 
     resource :auth do
       post :login do
-        user = User.where(:email => params[:email], :password => params[:password]).first
+        if params[:id]
+          # Query authentication table
+        else
+          user = User.where(:email => params[:email], :password => params[:password]).first
+        end
         if user.present?
           user.access_token
         else
@@ -47,10 +51,31 @@ module Insider
       end
 
       post '/todos/new' do
-        todo = Todo.new({:description => params[:description]})
+        todo = Todo.new({:description => params[:description], :title => params[:title], :image_url => params[:image_url]})
         if todo.save
           todo
         end
+      end
+
+      get '/facebook_long_lived_token' do
+        fb = Social::Facebook::RenewToken.new
+        response = fb.get_long_lived_token(current_user, params[:token])
+        if response
+          response
+        end
+      end
+
+      get '/save_gplus_user_id' do
+        puts params.id.inspect
+        params
+      end
+
+      post '/save_facebook_graph_object' do
+        FacebookGraphObject.new(
+          :user_id => current_user.id,
+          :todo_id => params[:todo_id],
+          :graph_object_id => params[:graph_object_id]
+        ).save!
       end
     end
   end
