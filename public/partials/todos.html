@@ -1,21 +1,16 @@
-<h2>Welcome to the Todo App</h2>
 <div class="row">
-  <div class="col-lg-3 well">
+  <div class="col-xs-12 col-md-6 well ">
     <h1>Todos</h1>
     <div ng-controller = 'TodoListCtrl'>
-      <a ui-sref='todos.create'>Create New Todo</a>
+      <a ui-sref='home.todos.create'>Create New Todo</a>
       <ul>
         <li ng-repeat="todo in todos | reverse">
-          <a ui-sref="todos.show({todoId: todo.id})">{{todo.title}}</a>
+          <a ui-sref="home.todos.show({todoId: todo.id})">{{todo.title}}</a>
         </li>
       </ul>
     </div>
   </div>
-
-  <div ng-controller="SessionController" class="col-lg-1 col-lg-offset-8 ng-scope">
-    <button ng-click="logout()">Logout</button>
-  </div>
-  <div class="col-lg-5 col-lg-offset-2">
+  <div class="col-xs-7 col-md-4 ">
     <div ui-view></div>
   </div>
 </div>

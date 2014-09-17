@@ -11,17 +11,42 @@ todoApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider,
     templateUrl: 'partials/login.html',
     controller: 'SessionController'
   })
-  .state('todos', {
-    url: '/todos',
-    templateUrl: 'partials/todos.html',
-    controller: 'TodoListCtrl'
+  .state('home', {
+    url: '/home',
+    views: {
+      '': {
+        templateUrl: 'partials/home.html',
+      },
+      'content@home': {
+        templateUrl: 'partials/todos.html',
+        controller: 'TodoListCtrl'
+      }
+    }
   })
-  .state('todos.create', {
+  .state('home.profile', {
+    url: '/profile',
+    views: {
+      'content@home': {
+        templateUrl: 'partials/profile.html',
+        controller: 'ProfileCtrl'
+      }
+    }
+  })
+  .state('home.todos', {
+    url: '/todos',
+    views: {
+      'content@home': {
+        templateUrl: 'partials/todos.html',
+        controller: 'TodoListCtrl'
+      }
+    }
+  })
+  .state('home.todos.create', {
     url:'/create',
     templateUrl: 'partials/todos.create.html',
     controller: 'TodoListCtrl'
   })
-  .state('todos.show', {
+  .state('home.todos.show', {
     url:'/show/:todoId',
     templateUrl: 'partials/todos.show.html',
     controller: 'TodoShowCtrl'

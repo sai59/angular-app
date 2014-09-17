@@ -34,14 +34,7 @@ todoControllers.controller('SessionController', ['$scope', '$q','$window', '$loc
     data.email = $scope.user.email;
     data.password = $scope.user.password;
 
-    UserService.login(data).then(function(result) {
-      SessionService.isLoggedIn = true;
-      $window.sessionStorage.token = result.data;
-      $location.path("/todos");
-    },
-    function (result) {
-      console.log('user unauthenticated', result);
-    });
+    UserService.login(data);
   }
 
   $scope.logout = function() {
@@ -76,4 +69,14 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
     FbService.fbCheckLoginStateAndRender(action, todo);
   }
 
+}])
+
+todoControllers.controller('ProfileCtrl', ['$scope', 'GplusService', 'FbService',  function($scope, GplusService, FbService){
+  $scope.gPlusCheck = function(action) {
+    GplusService.gPlusCheckLoginStateAndRender(action, null);
+  }
+
+  $scope.fbCheck = function(action) {
+    FbService.fbCheckLoginStateAndRender(action, null)
+  }
 }])

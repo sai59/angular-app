@@ -17,10 +17,20 @@ todoServices.factory('SessionService', [function() {
   return session;
 }])
 
-todoServices.factory('UserService', ['$http', '$q', function($http, $q) {
+todoServices.factory('UserService', ['$http', '$q', 'SessionService', '$window', '$location', function($http, $q, SessionService, $window, $location) {
   return {
     login: function(params) {
-      return $http.post('/auth/login', params);
+      return $http.post('/auth/login', params).then(function(result) {
+        SessionService.isLoggedIn = true;
+        $window.sessionStorage.token = result.data;
+        $location.path("/home");
+      }, function(reason) {
+        if(reason.status == 404) {
+          alert("please link your account first.");
+        } else {
+          console.log('something went horribly wrong.', reason);
+        }
+      });
     },
     fbtoken: function(data) {
       return $http.get('insiders/facebook_long_lived_token', {
@@ -31,12 +41,20 @@ todoServices.factory('UserService', ['$http', '$q', function($http, $q) {
       return $http.get('insiders/save_gplus_user_id', {
         params: data
       });
+    },
+    linkProfile: function(params) {
+      return $http.post('insiders/link_profile', params).then(function(result) {
+        alert('Profile Linking completed successfully');
+      }, function(reason) {
+        alert('something went horribly wrong.', reason);
+      });
     }
   }
 }])
 
-todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$rootScope', '$http', function(UserService, SessionService, $q, $rootScope, $http) {
+todoServices.factory('GplusService', ['UserService', '$q', '$rootScope', '$window', '$http', function(UserService, $q, $rootScope, $window, $http) {
   var obj = {};
+  obj.gplusaction = null;
 
   obj.processAuth = function(authResult, user) {
     // Do a check if authentication has been successful.
@@ -46,16 +64,16 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
       $rootScope.gplus_session_state = authResult.session_state;
       $rootScope.gplus_user_id = user.id;
       var data ={
-        id: user.id,
-        provider: 'gplus'
+        user: {
+          uid: user.id,
+          provider: 'gplus'
+        }
       }
-      UserService.login(data).then(function(result) {
-        SessionService.isLoggedIn = true;
-        $window.sessionStorage.token = result.data;
-        $location.path("/todos");
-      }, function(reason) {
-        console.log('something went horribly wrong.', reason)
-      });
+      if (obj.gplusaction == 'login') {
+        UserService.login(data);
+      } else if(obj.gplusaction == 'profile_link') {
+        UserService.linkProfile(data);
+      }
     } else if(authResult['error']) {
     }
   };
@@ -87,13 +105,11 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
     angular.element(document.querySelector('[id^="googlePlusBtn"]')).bind('click');
     var options = {
        contenturl: 'http://todo-social.herokuapp.com/todos/'+todo.id,
-       contentdeeplinkid: '/pages',
        clientid: '1045194091732-aasm5rpi68npeona5srgb01q7o56r0ob.apps.googleusercontent.com',
        cookiepolicy: 'single_host_origin',
        prefilltext: todo.title,
        calltoactionlabel: 'VIEW',
-       calltoactionurl: 'http://todo-social.herokuapp.com/todos/'+todo.id,
-       calltoactiondeeplinkid: '/pages/create'
+       calltoactionurl: 'http://todo-social.herokuapp.com/todos/'+todo.id
      };
     gapi.interactivepost.render('googlePlusBtn'+todo.id, options);
     window.setTimeout(function(){
@@ -119,6 +135,7 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
   }
 
   obj.gPlusCheckLoginStateAndRender = function(action, todo) {
+    obj.gplusaction = action;
     if($rootScope.gplus_session_state) {
       gapi.auth.checkSessionState({
         client_id: $rootScope.gplus_client_id,
@@ -151,7 +168,7 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
   return obj;
 }])
 
-todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$rootScope', '$window', '$http', function(UserService, SessionService, $q, $rootScope, $window, $http) {
+todoServices.factory('FbService', ['UserService', '$q', '$rootScope', '$window', '$http', '$location', function(UserService, $q, $rootScope, $window, $http, $location) {
   var obj = {};
 
   obj.fbShare = function(action, todo) {
@@ -160,16 +177,20 @@ todoServices.factory('FbService', ['UserService', 'SessionService', '$q', '$root
         console.log(response);
         if(action == 'login') {
           var data = {
-            id: response.authResponse.userID,
-            provider: 'fb'
+            user: {
+              uid: response.authResponse.userID,
+              provider: 'facebook'
+            }
           }
-          UserService.login(data).then(function(result) {
-            SessionService.isLoggedIn = true;
-            $window.sessionStorage.token = result.data;
-            $location.path("/todos");
-          }, function(reason) {
-            console.log('something went horribly wrong.', reason)
-          });
+          UserService.login(data);
+        } else if(action == 'profile_link') {
+          var data = {
+            user: {
+              uid: response.authResponse.userID,
+              provider: 'facebook'
+            }
+          }
+          UserService.linkProfile(data);
         } else {
           var data = {
             token: response.authResponse.accessToken
