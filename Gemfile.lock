@@ -48,6 +48,11 @@ GEM
       deep_merge (~> 1.0)
       map (~> 4.2)
     deep_merge (1.0.1)
+    delayed_job (4.0.2)
+      activesupport (>= 3.0, < 4.2)
+    delayed_job_active_record (4.0.2)
+      activerecord (>= 3.0, < 4.2)
+      delayed_job (>= 3.0, < 4.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     equalizer (0.0.9)
@@ -164,6 +169,8 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
   constantinople (~> 0.2.2)
+  delayed_job
+  delayed_job_active_record
   google_plus
   grape (~> 0.8.0)
   httparty (~> 0.13.1)

@@ -8,6 +8,8 @@ gem 'httparty', '~> 0.13.1'
 gem 'constantinople', '~> 0.2.2'
 gem 'google_plus'
 gem 'koala'
+gem 'delayed_job'
+gem 'delayed_job_active_record'
 
 # Gems used only for assets and not required
 # in production environments by default.

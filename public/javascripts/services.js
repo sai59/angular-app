@@ -35,7 +35,7 @@ todoServices.factory('UserService', ['$http', '$q', function($http, $q) {
   }
 }])
 
-todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$rootScope', function(UserService, SessionService, $q, $rootScope) {
+todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$rootScope', '$http', function(UserService, SessionService, $q, $rootScope, $http) {
   var obj = {};
 
   obj.processAuth = function(authResult, user) {
@@ -72,6 +72,13 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
     });
   }
 
+  obj.callbackForGplusShare = function(todo) {
+    params = {todo_id: todo.id};
+    $http.post('insiders/save_gplus_activity', params).then(
+      function(response) { console.log('saved'); },
+      function(reason) { console.log('not saved', reason); }
+    );
+  }
   // Render the share button.
   obj.renderShareButton = function(todo) {
     angular.element(document.querySelector('[id^="googlePlusBtn"]')).unbind('click');
@@ -86,11 +93,13 @@ todoServices.factory('GplusService', ['UserService', 'SessionService', '$q', '$r
        prefilltext: todo.title,
        calltoactionlabel: 'VIEW',
        calltoactionurl: 'http://todo-social.herokuapp.com/todos/'+todo.id,
-       calltoactiondeeplinkid: '/pages/create',
-       callback: obj.signInCallback
+       calltoactiondeeplinkid: '/pages/create'
      };
     gapi.interactivepost.render('googlePlusBtn'+todo.id, options);
-    window.setTimeout(function(){window.document.getElementById('googlePlusBtn'+todo.id).click();}, 1000);
+    window.setTimeout(function(){
+      window.document.getElementById('googlePlusBtn' + todo.id).click();
+      obj.callbackForGplusShare(todo);
+    }, 1000);
   }
 
   // Render the Login button.
