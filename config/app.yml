@@ -1,0 +1,5 @@
+development:
+  url: locahost:4000
+
+production:
+  url: todo-social.herokuapp.com

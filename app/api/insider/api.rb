@@ -77,6 +77,10 @@ module Insider
           :graph_object_id => params[:graph_object_id]
         ).save!
       end
+
+      post '/save_gplus_activity' do
+        GplusActivity.save_from_api(current_user.id, params[:todo_id])
+      end
     end
   end
 end
