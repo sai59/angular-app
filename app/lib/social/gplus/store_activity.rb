@@ -25,9 +25,9 @@ class Social::Gplus::StoreActivity
     end
   end
 
-  def our_activity?(acitivity)
-    if acitivity.attachments.present?
-      acitivity.attachments[0]["url"].include?(Settings.app.url)
+  def our_activity?(activity)
+    if activity.respond_to?(:attachments) && activity.attachments.present?
+      activity.attachments[0]["url"].include?(Settings.app.url)
     else
       false
     end
