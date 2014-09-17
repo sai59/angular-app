@@ -43,11 +43,11 @@ todoControllers.controller('SessionController', ['$scope', '$q','$window', '$loc
     $location.path("/");
   }
 
-  $scope.gPlusCheck = function(action) {
+  $scope.gPlusLogin = function(action) {
     GplusService.gPlusCheckLoginStateAndRender(action, null);
   }
 
-  $scope.fbCheck = function(action) {
+  $scope.fbLogin = function(action) {
     FbService.fbCheckLoginStateAndRender(action, null)
   }
 
@@ -61,22 +61,22 @@ todoControllers.controller('TodoShowCtrl', ['$scope', '$http', '$stateParams', '
     console.log('something went horribly wrong.', reason)
   });
 
-  $scope.gPlusCheck = function(action, todo) {
+  $scope.gPlusShare = function(action, todo) {
     GplusService.gPlusCheckLoginStateAndRender(action, todo);
   }
 
-  $scope.fbCheck = function(action, todo) {
+  $scope.fbShare = function(action, todo) {
     FbService.fbCheckLoginStateAndRender(action, todo);
   }
 
 }])
 
 todoControllers.controller('ProfileCtrl', ['$scope', 'GplusService', 'FbService',  function($scope, GplusService, FbService){
-  $scope.gPlusCheck = function(action) {
+  $scope.gPlusProfileLink = function(action) {
     GplusService.gPlusCheckLoginStateAndRender(action, null);
   }
 
-  $scope.fbCheck = function(action) {
+  $scope.fbProfileLink = function(action) {
     FbService.fbCheckLoginStateAndRender(action, null)
   }
 }])
