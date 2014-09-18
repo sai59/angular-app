@@ -24,8 +24,14 @@ module Insider
 
     resource :auth do
       post :login do
-        if params[:id]
-          # Query authentication table
+        if params[:user]
+          user_attributes = params[:user].to_hash
+          authorization = Authorization.where(user_attributes).first
+          if authorization.present?
+            user = User.find(authorization.user_id)
+          else
+            error!('Profile not linked', 404)
+          end
         else
           user = User.where(:email => params[:email], :password => params[:password]).first
         end
@@ -80,6 +86,12 @@ module Insider
 
       post '/save_gplus_activity' do
         GplusActivity.save_from_api(current_user.id, params[:todo_id])
+      end
+
+      post '/link_profile' do
+        user_attributes = params[:user].to_hash
+        user_attributes.merge!(:user_id => current_user.id)
+        Authorization.where(user_attributes).first_or_create
       end
     end
   end

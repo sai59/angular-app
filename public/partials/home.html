@@ -1,0 +1,7 @@
+<h2>Welcome to the Todo App</h2>
+<button ui-sref='home.profile'>Link Your Profile</button>
+<div ng-controller="SessionController" class="col-lg-1 col-lg-offset-8 ng-scope">
+  <button ng-click="logout()">Logout</button>
+</div>
+<a ui-sref='home.todos'>Todos</a>
+<div ui-view='content'></div>

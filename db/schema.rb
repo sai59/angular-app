@@ -13,6 +13,14 @@
 
 ActiveRecord::Schema.define(:version => 20140917083141) do
 
+  create_table "authorizations", :force => true do |t|
+    t.string   "uid"
+    t.integer  "user_id"
+    t.string   "provider"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
     t.integer  "attempts",   :default => 0, :null => false
