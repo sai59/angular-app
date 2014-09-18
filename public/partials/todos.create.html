@@ -1,20 +1,20 @@
-<div controller="TodoListCtrl">
-  <form name="createTodoForm" novalidate ng-submit="createtodo()">
+<div class="container" controller="TodoListCtrl">
+  <form name="createTodoForm" novalidate ng-submit="createtodo()" class="formAlignment">
     <h2 class="titleColor">Create Todo</h2>
     <div class="input-group">
-      <span class="label label-default" style="background-color:green">Title</span>
+      <span class="label label-default">Title</span>
       <input type="text" name="title" class="form-control" ng-model='title' required ng-class="{error: submitted && createTodoForm.title.$invalid}">
       <small ng-show="createTodoForm.title.$error.required && submitted">Please enter title</small>
     </div>
     
     <div class="input-group">
-      <span class="label label-default" style="background-color:green">Description</span>
-      <input type="text" name="description" class="form-control" ng-model='description' required ng-class="{error: submitted && createTodoForm.description.$invalid}">
+      <span class="label label-default">Description</span>
+      <textarea type="text" name="description" class="form-control" ng-model='description' required ng-class="{error: submitted && createTodoForm.description.$invalid}"></textarea>
       <small ng-show="createTodoForm.description.$error.required && submitted">Please enter description</small>
     </div>
     
     <div class="input-group">
-      <span class="label label-default" style="background-color:green">Image URL</span>
+      <span class="label label-default">Image URL</span>
       <input type="url" name="url" class="form-control" ng-model='image_url' required ng-class="{error: submitted && createTodoForm.url.$invalid}">
       <small ng-show="createTodoForm.url.$error.required && submitted">Please enter URL</small>
       <small ng-show="createTodoForm.url.$error.url && submitted">Please enter Valid URL</small>

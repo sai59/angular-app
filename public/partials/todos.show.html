@@ -1,10 +1,21 @@
-<h2>This is a todo show page</h2>
-<br/>
-Title: {{todo.title}}
-<br/>
-Description: {{todo.description}}
-<br/>
-Image: <img src="{{todo.image_url}}" width='150px' height='150px'/>
-<br/>
-<button ng-click="fbShare('share', todo)" id="fbBtn">Fb Share</button>
-<button id="dummygplusBtn" ng-click="gPlusShare('share', todo)">G+ Share</button>
+<div class="formAlignment">
+  <h2>This is a todo show page</h2>
+  <br/>
+  <p>
+    <span class="titleColor">Title:</span>
+    {{todo.title}}
+  </p>
+  <br/>
+  <p>
+    <span class="titleColor">Description:</span>
+    {{todo.description}}
+  </p>
+  <br/>
+  <p>
+    <span class="titleColor">Image:</span>
+    <img src="{{todo.image_url}}" width='150px' height='150px'/>
+  </p>
+  <br/>
+  <button class="btn btn-google-plus" ng-click="fbShare('share', todo)" id="fbBtn">Fb Share</button>
+  <button class="btn btn-facebook" id="dummygplusBtn" ng-click="gPlusShare('share', todo)">G+ Share</button>
+</div>
