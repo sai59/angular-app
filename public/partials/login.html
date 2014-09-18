@@ -1,5 +1,5 @@
-<div style="width: 350px; margin: 135px auto 0 auto;">
-  <h2 class="titleColor">Todo Login</h2>
+<div style="width: 360px; margin: 135px auto 0 auto;" class="well">
+  <h2 class="titleColor">Login</h2>
   <div controller="SessionController">
     <form  name="loginForm" novalidate ng-submit="login()" id="login-form" class="form-horizantal">
       <div class="form-group">
@@ -9,12 +9,14 @@
       </div>
 
       <div class="form-group">
-        <input class="form-control" style="width:250px" name="password" type="Password" ng-model="user.password" placeholder="password" required ng-class="{error: submitted && loginForm.password.$invalid}"/>
+        <input class="form-control" style="width:250px" name="password" type="Password" ng-model="user.password" placeholder="Password" required ng-class="{error: submitted && loginForm.password.$invalid}"/>
         <small ng-show="loginForm.password.$error.required && submitted">Please enter Password</small>
       </div>
       <button type="submit" class="btn btn-primary" ng-click="submitted=true">Login</button>
-      <button id="dummyGplusLoginBtn" class="btn btn-primary" ng-click="gPlusLogin('login')">G+ Login</button>
-      <button class="btn btn-primary" ng-click="fbLogin('login')">FB Login</button>
+      <hr style="border: 1px solid;color: #dedede" />
+      <p>OR</p>
+      <button class="btn btn-google-plus" id="dummyGplusLoginBtn" ng-click="gPlusLogin('login')"><i class="fa fa-google-plus"></i> | Login with G+</button>
+      <button class="btn btn-facebook" ng-click="fbLogin('login')"><i class="fa fa-facebook"></i> | Login with Facebook</button>
     </form>
   </div>
 </div>
