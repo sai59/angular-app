@@ -7,3 +7,21 @@ input.error {
 .titleColor {
   font-weight:bold; 
 }
+.container {
+  width: 540px;
+}
+.formAlignment {
+  position:relative;
+  left:260px
+}
+.headerStyle {
+  background-color:black; 
+  height:65px
+}
+.leftStyle {
+  color:white;
+}
+.rightStyle {
+  position: relative; 
+  top: 22%;
+}
