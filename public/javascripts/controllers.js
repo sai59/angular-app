@@ -6,7 +6,10 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
     console.log('something went horribly wrong.', reason)
   })
 
-  $scope.createTodo =  function() {
+  $scope.createtodo =  function() {
+    if ($scope.createTodoForm.$invalid) {
+    return;
+  }
     var data = {
       title: $scope.title,
       description: $scope.description,
