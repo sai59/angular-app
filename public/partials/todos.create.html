@@ -1,6 +1,6 @@
 <div controller="TodoListCtrl">
   <form name="createTodoForm" novalidate ng-submit="createtodo()">
-    <h2 class="titleColor">Create Todo</h2>
+    <div class="titleColor">Create Todo</div>
     <div class="input-group">
       <span class="label label-default" style="background-color:green">Title</span>
       <input type="text" name="title" class="form-control" ng-model='title' required ng-class="{error: submitted && createTodoForm.title.$invalid}">
