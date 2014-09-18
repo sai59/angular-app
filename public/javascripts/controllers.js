@@ -20,7 +20,7 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
       $scope.title = '';
       $scope.description = '';
       $scope.image_url = '';
-      $state.transitionTo('todos.create', $state.$current.params, { reload: true, inherit: true, notify: true });
+      $state.transitionTo('home.todos.create', $state.$current.params, { reload: true, inherit: true, notify: true });
     }, function(result) {
      console.log("todo not created", result);
     });
