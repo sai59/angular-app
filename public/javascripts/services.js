@@ -17,7 +17,13 @@ todoServices.factory('SessionService', [function() {
   return session;
 }])
 
-todoServices.factory('UserService', ['$http', '$q', 'SessionService', '$window', '$location', function($http, $q, SessionService, $window, $location) {
+todoServices.factory('UserService', ['$http', '$rootScope', '$q', 'SessionService', '$window', '$location', function($http, $rootScope, $q, SessionService, $window, $location) {
+  $rootScope.loginFailedMessage = {
+    insider_login_failed: false,
+    insider_login_failed_message: "Invalid Login credentials.",
+    social_login_failed: false,
+    social_login_failed_message: "Please link your account first."
+  }
   return {
     login: function(params) {
       return $http.post('/auth/login', params).then(function(result) {
@@ -26,9 +32,11 @@ todoServices.factory('UserService', ['$http', '$q', 'SessionService', '$window',
         $location.path("/home");
       }, function(reason) {
         if(reason.status == 404) {
-          alert("please link your account first.");
-        } else {
-          console.log('something went horribly wrong.', reason);
+          $rootScope.loginFailedMessage.insider_login_failed = false;
+          $rootScope.loginFailedMessage.social_login_failed = true;
+        } else if(reason.status == 401) {
+          $rootScope.loginFailedMessage.insider_login_failed = true;
+          $rootScope.loginFailedMessage.social_login_failed = false;
         }
       });
     },

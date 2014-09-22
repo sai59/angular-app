@@ -1,5 +1,7 @@
 <div style="width: 360px; margin: 135px auto 0 auto;" class="well">
   <h2 class="titleColor">Login</h2>
+  <div ng-show= "loginFailedMessage.social_login_failed" class="alert alert-danger" role="alert">{{loginFailedMessage.social_login_failed_message}}</div>
+  <div ng-show= "loginFailedMessage.insider_login_failed" class="alert alert-danger" role="alert">{{loginFailedMessage.insider_login_failed_message}}</div>
   <div controller="SessionController">
     <form  name="loginForm" novalidate ng-submit="login()" id="login-form" class="form-horizantal">
       <div class="form-group">
