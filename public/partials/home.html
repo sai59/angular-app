@@ -1,7 +1,14 @@
-<h2>Welcome to the Todo App</h2>
-<button ui-sref='home.profile'>Link Your Profile</button>
-<div ng-controller="SessionController" class="col-lg-1 col-lg-offset-8 ng-scope">
-  <button ng-click="logout()">Logout</button>
+<div class="row">
+  <div class="col-md-8">
+    <h2>Welcome to the Angular App</h2>
+  </div>
+  <div class="btn-group col-md-4" ng-controller="SessionController">
+    <br />
+    <button ui-sref='home.todos' "type"="button" class="btn btn-default">Todos</button>
+    <button ui-sref='home.profile' "type"="button" class="btn btn-default">Link Your Profile</button>
+    <button ng-click="logout() "type"="button" class="btn btn-danger">Logout</button>
+  </div>
 </div>
-<a ui-sref='home.todos'>Todos</a>
+<hr />
+<br />
 <div ui-view='content'></div>
