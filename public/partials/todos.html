@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-xs-12 col-md-3 well ">
+  <div class="col-xs-12 col-md-3 well" style="width:330px;">
     <div ng-controller = 'TodoListCtrl'>
     <div>
       <span class="pull-left">
@@ -10,9 +10,18 @@
       </span></b>
     </div>
     <div style="clear: both"></div>
-      <div class="list-group">
-        <a ui-sref="home.todos.show({todoId: todo.id})" class="list-group-item" ng-repeat="todo in todos | reverse" ui-sref-active="active">{{todo.title}}</a>
-      </div>
+    <div class="todosScrollbar">
+    <div class="list-group" ng-repeat="todo in todos | reverse">
+      <span class="pull-left" style="width:240px;">
+        <a ui-sref="home.todos.show({todoId: todo.id})" class="list-group-item todoTitleScrollbar"  ui-sref-active="active">{{todo.title}}</a>
+      </span>
+      <span style="padding:10px 0px 0px 10px;">
+        <button style="margin-top:4px;" data-ng-click="deleteTodo(todo.id)" class="btn btn-danger btn-xs">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </span>
+    </div>
+    </div>
     </div>
   </div>
   <div class="col-xs-7 col-md-6 .col-xs-offset-2 col-md-offset-1">
