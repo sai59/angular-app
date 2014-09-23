@@ -5,5 +5,16 @@ input.error {
   color: red;
 }
 .titleColor {
-  font-weight:bold; 
+  font-weight:bold;
+}
+.todoTitleScrollbar {
+  height:40px;
+  display: block;
+  overflow: auto;
+}
+.todosScrollbar {
+  width:309px;
+  height:400px;
+  display: block;
+  overflow: auto;
 }

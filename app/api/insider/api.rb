@@ -55,7 +55,11 @@ module Insider
       get '/todos/:id' do
         Todo.find(params[:id])
       end
-
+      
+      get '/todos/:id/delete' do
+        Todo.find(params[:id]).destroy
+      end
+      
       post '/todos/new' do
         todo = Todo.new({:description => params[:description], :title => params[:title], :image_url => params[:image_url]})
         if todo.save

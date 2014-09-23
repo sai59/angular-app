@@ -1,4 +1,4 @@
-todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoService', 'UserService',  function($scope, $state, $q, TodoService, UserService){
+todoControllers.controller('TodoListCtrl', ['$scope', '$http', '$state', '$q', 'TodoService', 'UserService', function($scope, $http, $state, $q, TodoService, UserService){
   $scope.todos = [];
   TodoService.getTodos().then(function(result) {
     $scope.todos = result.data;
@@ -25,7 +25,15 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$state', '$q', 'TodoServi
      console.log("todo not created", result);
     });
   }
-
+  
+  $scope.deleteTodo =  function(tId, index) {
+    if (confirm('Are you sure you want to delete?')) {
+      $http.get('insiders/todos/'+tId+'/delete').then(function(result) {
+        $state.transitionTo('home.todos', $state.$current.params, { reload: true, inherit: true, notify: true });
+      });
+    }
+  }
+  
 }])
 
 todoControllers.controller('SessionController', ['$scope', '$q','$window', '$location', 'UserService', 'SessionService', 'GplusService', 'FbService', function($scope, $q, $window, $location, UserService, SessionService, GplusService, FbService){
