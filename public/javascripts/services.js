@@ -6,6 +6,10 @@ todoServices.factory('TodoService', ['$http', '$q', function($http, $q) {
 
     createTodo: function(params) {
       return $http.post('insiders/todos/new', params).then(function(response) { return response.data; }, function() { return response.data; });
+    },
+
+    updateTodo: function(params) {
+      return $http.post('insiders/todos/'+params.id+'/update_todo', params).then(function(response) { return response.data; }, function() { return response.data; });
     }
   }
 }]);

@@ -1,0 +1,24 @@
+<div controller="TodoListCtrl">
+  <form name="updateTodoForm" novalidate ng-submit="updateTodo(todo)">
+    <div class="titleColor">Update Todo</div>
+    <div class="input-group">
+      <span class="label label-default" style="background-color:green">Title</span>
+      <input type="text" name="title" class="form-control" ng-model="todo.title" required ng-class="{error: submitted && updateTodoForm.title.$invalid}">
+      <small ng-show="updateTodoForm.title.$error.required && submitted">Please enter title</small>
+    </div>
+    
+    <div class="input-group">
+      <span class="label label-default" style="background-color:green">Description</span>
+      <input type="text" name="description" class="form-control" ng-model="todo.description" required ng-class="{error: submitted && updateTodoForm.description.$invalid}">
+      <small ng-show="updateTodoForm.description.$error.required && submitted">Please enter description</small>
+    </div>
+    
+    <div class="input-group">
+      <span class="label label-default" style="background-color:green">Image URL</span>
+      <input type="url" name="url" class="form-control" ng-model='todo.image_url' required ng-class="{error: submitted && updateTodoForm.url.$invalid}">
+      <small ng-show="updateTodoForm.url.$error.required && submitted">Please enter URL</small>
+      <small ng-show="updateTodoForm.url.$error.url && submitted">Please enter Valid URL</small>
+    </div>
+    <input type='submit' value="Update" class="btn btn-primary" ng-click="submitted=true">
+  </form>
+</div>

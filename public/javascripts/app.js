@@ -46,6 +46,18 @@ todoApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider,
     templateUrl: 'partials/todos.create.html',
     controller: 'TodoListCtrl'
   })
+  .state('home.todos.edit', {
+    url:'/:todoId/edit',
+    resolve: {
+        todo: function($http, $stateParams) {
+          return $http.get('insiders/todos/'+$stateParams.todoId)
+        }
+      },
+    templateUrl: 'partials/todos.edit.html',
+    controller: function($scope, todo) {
+      $scope.todo = todo.data;
+    }
+  })
   .state('home.todos.show', {
     url:'/show/:todoId',
     templateUrl: 'partials/todos.show.html',
