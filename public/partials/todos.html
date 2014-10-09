@@ -12,12 +12,15 @@
     <div style="clear: both"></div>
     <div class="todosScrollbar">
     <div class="list-group" ng-repeat="todo in todos | reverse">
-      <span class="pull-left" style="width:240px;">
+      <span class="pull-left" style="width:222px;">
         <a ui-sref="home.todos.show({todoId: todo.id})" class="list-group-item todoTitleScrollbar"  ui-sref-active="active">{{todo.title}}</a>
       </span>
       <span style="padding:10px 0px 0px 10px;">
         <button style="margin-top:4px;" data-ng-click="deleteTodo(todo.id)" class="btn btn-danger btn-xs">
           <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        <button style="margin-top:4px;" ui-sref='home.todos.edit({todoId: todo.id})' class="btn btn-warning btn-xs">
+          <span class="glyphicon glyphicon-edit"></span>
         </button>
       </span>
     </div>

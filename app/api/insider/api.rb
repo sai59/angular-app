@@ -60,6 +60,13 @@ module Insider
         Todo.find(params[:id]).destroy
       end
       
+      post '/todos/:id/update_todo' do
+        todo = Todo.find(params[:id])
+        if todo.present?
+          todo.update_attributes({:description => params[:description], :title => params[:title], :image_url => params[:image_url]})
+        end
+      end
+      
       post '/todos/new' do
         todo = Todo.new({:description => params[:description], :title => params[:title], :image_url => params[:image_url]})
         if todo.save

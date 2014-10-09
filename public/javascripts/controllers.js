@@ -1,4 +1,4 @@
-todoControllers.controller('TodoListCtrl', ['$scope', '$http', '$state', '$q', 'TodoService', 'UserService', function($scope, $http, $state, $q, TodoService, UserService){
+todoControllers.controller('TodoListCtrl', ['$scope', '$http', '$state', '$stateParams', '$q', 'TodoService', 'UserService', function($scope, $http, $state, $stateParams, $q, TodoService, UserService){
   $scope.todos = [];
   TodoService.getTodos().then(function(result) {
     $scope.todos = result.data;
@@ -26,6 +26,21 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$http', '$state', '$q', '
     });
   }
   
+  $scope.updateTodo =  function(todo) {
+    var data = {
+      id: todo.id,
+      title: todo.title,
+      description: todo.description,
+      image_url: todo.image_url
+    }
+
+    TodoService.updateTodo(data).then(function(result) {
+      $state.transitionTo('home.todos', $state.$current.params, { reload: true, inherit: true, notify: true });
+    }, function(result) {
+     console.log("todo not updated", result);
+    });
+  }
+  
   $scope.deleteTodo =  function(tId, index) {
     if (confirm('Are you sure you want to delete?')) {
       $http.get('insiders/todos/'+tId+'/delete').then(function(result) {
@@ -33,7 +48,7 @@ todoControllers.controller('TodoListCtrl', ['$scope', '$http', '$state', '$q', '
       });
     }
   }
-  
+
 }])
 
 todoControllers.controller('SessionController', ['$scope', '$q','$window', '$location', 'UserService', 'SessionService', 'GplusService', 'FbService', function($scope, $q, $window, $location, UserService, SessionService, GplusService, FbService){
